@@ -108,12 +108,13 @@ RCT_EXPORT_METHOD(stat:(NSString *)filepath
 }
 
 RCT_EXPORT_METHOD(writeFile:(NSString *)filepath
-                  contents:(NSString *)base64Content
+                  contents:(NSString *)contents
                   options:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-  NSData *data = [[NSData alloc] initWithBase64EncodedString:base64Content options:NSDataBase64DecodingIgnoreUnknownCharacters];
+  NSData *data = [contents dataUsingEncoding:NSUTF8StringEncoding];
+  // NSData *data = [[NSData alloc] initWithBase64EncodedString:base64Content options:NSDataBase64DecodingIgnoreUnknownCharacters];
 
   NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
 
@@ -131,11 +132,12 @@ RCT_EXPORT_METHOD(writeFile:(NSString *)filepath
 }
 
 RCT_EXPORT_METHOD(appendFile:(NSString *)filepath
-                  contents:(NSString *)base64Content
+                  contents:(NSString *)contents
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-  NSData *data = [[NSData alloc] initWithBase64EncodedString:base64Content options:NSDataBase64DecodingIgnoreUnknownCharacters];
+  NSData *data = [contents dataUsingEncoding:NSUTF8StringEncoding];
+  // NSData *data = [[NSData alloc] initWithBase64EncodedString:base64Content options:NSDataBase64DecodingIgnoreUnknownCharacters];
 
   NSFileManager *fM = [NSFileManager defaultManager];
 
@@ -163,12 +165,13 @@ RCT_EXPORT_METHOD(appendFile:(NSString *)filepath
 }
 
 RCT_EXPORT_METHOD(write:(NSString *)filepath
-                  contents:(NSString *)base64Content
+                  contents:(NSString *)contents
                   position:(NSInteger)position
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-  NSData *data = [[NSData alloc] initWithBase64EncodedString:base64Content options:NSDataBase64DecodingIgnoreUnknownCharacters];
+  NSData *data = [contents dataUsingEncoding:NSUTF8StringEncoding];
+  // NSData *data = [[NSData alloc] initWithBase64EncodedString:base64Content options:NSDataBase64DecodingIgnoreUnknownCharacters];
 
   NSFileManager *fM = [NSFileManager defaultManager];
 
@@ -277,9 +280,10 @@ RCT_EXPORT_METHOD(readFile:(NSString *)filepath
   }
 
   NSData *content = [[NSFileManager defaultManager] contentsAtPath:filepath];
-  NSString *base64Content = [content base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+  NSString *newStr = [[NSString alloc] initWithData:content encoding:NSUTF8StringEncoding];
+  // NSString *base64Content = [content base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
 
-  resolve(base64Content);
+  resolve(newStr);
 }
 
 RCT_EXPORT_METHOD(read:(NSString *)filepath
@@ -322,9 +326,10 @@ RCT_EXPORT_METHOD(read:(NSString *)filepath
         content = [file readDataToEndOfFile];
     }
 
-    NSString *base64Content = [content base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+    NSString *newStr = [[NSString alloc] initWithData:content encoding:NSUTF8StringEncoding];
+    // NSString *base64Content = [content base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
 
-    resolve(base64Content);
+    resolve(newStr);
 }
 
 RCT_EXPORT_METHOD(hash:(NSString *)filepath

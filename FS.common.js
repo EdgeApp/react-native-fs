@@ -156,7 +156,7 @@ function readFileGeneric(filepath: string, encodingOrOptions:?string, command: F
     var contents;
 
     if (options.encoding === 'utf8') {
-      contents = utf8.decode(base64.decode(b64));
+      contents = b64;
     } else if (options.encoding === 'ascii') {
       contents = base64.decode(b64);
     } else if (options.encoding === 'base64') {
@@ -314,7 +314,7 @@ var RNFS = {
       var contents;
 
       if (options.encoding === 'utf8') {
-        contents = utf8.decode(base64.decode(b64));
+        contents = b64;
       } else if (options.encoding === 'ascii') {
         contents = base64.decode(b64);
       } else if (options.encoding === 'base64') {
@@ -383,7 +383,7 @@ var RNFS = {
     }
 
     if (options.encoding === 'utf8') {
-      b64 = base64.encode(utf8.encode(contents));
+      b64 = contents;
     } else if (options.encoding === 'ascii') {
       b64 = base64.encode(contents);
     } else if (options.encoding === 'base64') {
@@ -411,7 +411,7 @@ var RNFS = {
     }
 
     if (options.encoding === 'utf8') {
-      b64 = base64.encode(utf8.encode(contents));
+      b64 = contents;
     } else if (options.encoding === 'ascii') {
       b64 = base64.encode(contents);
     } else if (options.encoding === 'base64') {
@@ -439,7 +439,7 @@ var RNFS = {
     }
 
     if (options.encoding === 'utf8') {
-      b64 = base64.encode(utf8.encode(contents));
+      b64 = contents;
     } else if (options.encoding === 'ascii') {
       b64 = base64.encode(contents);
     } else if (options.encoding === 'base64') {

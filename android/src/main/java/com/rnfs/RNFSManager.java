@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,10 +147,10 @@ public class RNFSManager extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void writeFile(String filepath, String base64Content, ReadableMap options, Promise promise) {
+  public void writeFile(String filepath, String content, ReadableMap options, Promise promise) {
     try {
-      byte[] bytes = Base64.decode(base64Content, Base64.DEFAULT);
-
+      // byte[] bytes = Base64.decode(base64Content, Base64.DEFAULT);
+      byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
       OutputStream outputStream = getOutputStream(filepath, false);
       outputStream.write(bytes);
       outputStream.close();
@@ -162,9 +163,10 @@ public class RNFSManager extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void appendFile(String filepath, String base64Content, Promise promise) {
+  public void appendFile(String filepath, String content, Promise promise) {
     try {
-      byte[] bytes = Base64.decode(base64Content, Base64.DEFAULT);
+      // byte[] bytes = Base64.decode(base64Content, Base64.DEFAULT);
+      byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
 
       OutputStream outputStream = getOutputStream(filepath, true);
       outputStream.write(bytes);
@@ -178,9 +180,10 @@ public class RNFSManager extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void write(String filepath, String base64Content, int position, Promise promise) {
+  public void write(String filepath, String content, int position, Promise promise) {
     try {
-      byte[] bytes = Base64.decode(base64Content, Base64.DEFAULT);
+      // byte[] bytes = Base64.decode(base64Content, Base64.DEFAULT);
+      byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
 
       if (position < 0) {
         OutputStream outputStream = getOutputStream(filepath, true);
@@ -216,9 +219,10 @@ public class RNFSManager extends ReactContextBaseJavaModule {
     try {
       InputStream inputStream = getInputStream(filepath);
       byte[] inputData = getInputStreamBytes(inputStream);
-      String base64Content = Base64.encodeToString(inputData, Base64.NO_WRAP);
+      String content = new String(inputData, StandardCharsets.UTF_8);
+      // String base64Content = Base64.encodeToString(inputData, Base64.NO_WRAP);
 
-      promise.resolve(base64Content);
+      promise.resolve(content);
     } catch (Exception ex) {
       ex.printStackTrace();
       reject(promise, filepath, ex);
@@ -233,9 +237,10 @@ public class RNFSManager extends ReactContextBaseJavaModule {
       inputStream.skip(position);
       int bytesRead = inputStream.read(buffer, 0, length);
 
-      String base64Content = Base64.encodeToString(buffer, 0, bytesRead, Base64.NO_WRAP);
+      String content = new String(buffer, StandardCharsets.UTF_8);
+      // String base64Content = Base64.encodeToString(buffer, 0, bytesRead, Base64.NO_WRAP);
 
-      promise.resolve(base64Content);
+      promise.resolve(content);
     } catch (Exception ex) {
       ex.printStackTrace();
       reject(promise, filepath, ex);
